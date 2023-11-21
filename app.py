@@ -1,12 +1,14 @@
-import sqlite3
 from flask import Flask, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 
+db = SQLAlchemy()
 app = Flask(__name__)
-db = SQLAlchemy(app)
+
+# CORS
+CORS(app)
 
 # User model
-
 class User(db.Model):
     __tablename__ = 'users'
     
@@ -22,13 +24,13 @@ class User(db.Model):
         self.email = email
         self.password = password
         self.phone_number = phone_number
-        
 
 # Init db
-def init_db():
-    DB_Name =  "sample.db"
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + DB_Name
+def init_db(app):
+    app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:-CFdGfFedGbAag-Bc11gf2bE1G*6d4CG@viaduct.proxy.rlwy.net:16462/railway"
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
+
 
 # Users crud
 
@@ -122,7 +124,6 @@ def home():
     return render_template('index.html', users=users)
 
 # Init db
-if __name__ == '__main__':
-    init_db()
-    app.run(debug=True)
-    
+init_db(app)
+with app.app_context():
+    db.create_all()
