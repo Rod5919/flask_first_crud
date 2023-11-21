@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 
@@ -12,14 +12,13 @@ CORS(app)
 class User(db.Model):
     __tablename__ = 'users'
     
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(50))
     email = db.Column(db.String(50))
     password = db.Column(db.String(50))
     phone_number = db.Column(db.String(50), nullable=True)
     
-    def __init__(self, id, name, email, password, phone_number: str = None):
-        self.id = id
+    def __init__(self, name, email, password, phone_number: str = None):
         self.name = name
         self.email = email
         self.password = password
@@ -27,29 +26,30 @@ class User(db.Model):
 
 # Init db
 def init_db(app):
-    app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:-CFdGfFedGbAag-Bc11gf2bE1G*6d4CG@viaduct.proxy.rlwy.net:16462/railway"
+    app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:34DfG33E--Ad*A*f-6BF6cFe2Afg*AB3@viaduct.proxy.rlwy.net:56619/railway"
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
 
+    with app.app_context():
+        db.create_all()
 
 # Users crud
 
-# Create user
-@app.route('/create_user', methods=['POST'])
+## Create user
+@app.route('/create', methods=['POST'])
 def create():
-    id = request.form['id']
     name = request.form['name']
     email = request.form['email']
     password = request.form['password']
     phone_number = request.form.get('phone_number', None)
     
-    user = User(id, name, email, password, phone_number)
+    user = User(name, email, password, phone_number)
     db.session.add(user)
     db.session.commit()
     
-    return jsonify({'message': 'User created successfully!'})
+    return redirect('/')
 
-# Get all users
+## Get all users
 @app.route('/users', methods=['GET'])
 def get_all():
     # Query params: limit, offset
@@ -70,7 +70,7 @@ def get_all():
         
     return jsonify({'users': output})
 
-# Get single user
+## Get single user
 @app.route('/user/<id>', methods=['GET'])
 def get_one(id):
     user = User.query.filter_by(id=id).first()
@@ -87,7 +87,7 @@ def get_one(id):
     
     return jsonify({'user': user_data})
 
-# Patch user
+## Patch user
 @app.route('/user/<id>', methods=['PATCH'])
 def patch(id):
     user = User.query.filter_by(id=id).first()
@@ -104,7 +104,7 @@ def patch(id):
     
     return jsonify({'message': 'User updated successfully!'})
 
-# Delete user
+## Delete user
 @app.route('/user/<id>', methods=['DELETE'])
 def delete(id):
     user = User.query.filter_by(id=id).first()
@@ -125,5 +125,3 @@ def home():
 
 # Init db
 init_db(app)
-with app.app_context():
-    db.create_all()
