@@ -66,7 +66,6 @@ El archivo `config.py` es el encargado de configurar la aplicación.
 
 La base de datos se crea en railway, para ello se debe crear una cuenta en [railway](https://railway.app/), luego se debe crear un nuevo proyecto y por último se debe crear una base de datos postgresql.
 
-
 ## Paso 8: Crear archivo db.py
 
 El archivo `db.py` es el encargado de crear la conexión con la base de datos.
