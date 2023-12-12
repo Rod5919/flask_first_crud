@@ -40,8 +40,8 @@ pip3 install -r requirements.txt # o python3 -m pip install -r requirements.txt
 `-- models
     |-- __init__.py
     `-- user_model.py
-`-- readme.md
-`-- requirements.txt
+|-- readme.md
+|-- requirements.txt
 `-- routes
     |-- __init__.py
     |-- html_routes.py
