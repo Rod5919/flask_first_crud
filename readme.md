@@ -28,6 +28,7 @@ pip3 install -r requirements.txt # o python3 -m pip install -r requirements.txt
 ## Paso 4: Crear el arbol de directorios
 
 ```bash
+|-- .env
 |-- .gitignore
 |-- app.py
 |-- requirements.txt
@@ -60,7 +61,7 @@ El archivo `app.py` es el encargado de ejecutar la aplicación.
 
 ## Paso 6: Crear archivo de configuración config.py
 
-El archivo `config.py` es el encargado de configurar la aplicación.
+El archivo `config.py` es el encargado de configurar la aplicación y archivo `.env`, este archivo no debe ser subido al repositorio.
 
 ## Paso 7: Crear base de datos
 
